@@ -4,7 +4,7 @@
 
 ### -> [**Download the full SPX500 dataset on getdata.finance**](https://getdata.finance/datasets/spx500)
 
-**SPX500 5m OHLCV index historical data** — ultra high-quality 5m OHLCV for **S&P 500**. Clean `time, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
+**SPX500 5m OHLCV index historical data** — ultra high-quality 5m OHLCV for **S&P 500**. Clean `datetime, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
 
 ## Table of contents
 
@@ -22,12 +22,12 @@
 ## Why this dataset?
 
 - **Ultra high-quality 5m OHLCV** for **S&P 500** (Index)
-- **Clean CSV schema** — `time, open, high, low, close, volume` (no gaps in formatting)
+- **Clean CSV schema** — `datetime, open, high, low, close, volume` (no gaps in formatting)
 - **Free evaluation sample** on GitHub (`5m`) · **11 timeframes** on [getdata.finance](https://getdata.finance/datasets/spx500) · **1,234,149** `5m` rows in the full archive
 - Built for **backtesting**, **algorithmic trading** and **quantitative finance** workflows
 - **Weekly refresh** — [getdata.finance](https://getdata.finance) every **Saturday, 8am UTC+0**; GitHub `5m` sample updated in sync
 
-> **Sample on GitHub** · `SPX500_5m.csv` (11,089 rows, `2026-07-07` -> `2026-09-02`, 750.22 KB). **Full archive on [getdata.finance](https://getdata.finance/datasets/spx500)** — **1,234,149** `5m` rows (full `1m`: 5,964,774), **11 timeframes**, `2008-08-19` -> `2026-09-02`.
+> **Sample on GitHub** · `SPX500_5m.csv` (11,089 rows, `2026-07-07` -> `2026-09-02`, 750.23 KB). **Full archive on [getdata.finance](https://getdata.finance/datasets/spx500)** — **1,234,149** `5m` rows (full `1m`: 5,964,774), **11 timeframes**, `2008-08-19` -> `2026-09-02`.
 
 ## Download sample
 
@@ -46,7 +46,7 @@ Full archive & live chart on getdata.finance: **[https://getdata.finance/dataset
 | Instrument | S&P 500 · Index | S&P 500 · Index |
 | Timeframes | `5m` (sample) | **11** — 1m · 3m · 5m · 15m · 30m · 1H · 4H · 12H · 1D · 3D · 1W |
 | 5m rows | 11,089 | **1,234,149** |
-| Size | 750.22 KB | full ZIP on [getdata.finance](https://getdata.finance/datasets/spx500) |
+| Size | 750.23 KB | full ZIP on [getdata.finance](https://getdata.finance/datasets/spx500) |
 | Period | `2026-07-07` -> `2026-09-02` | `2008-08-19` -> `2026-09-02` |
 | File | `SPX500_5m.csv` | ZIP on [getdata.finance](https://getdata.finance/datasets/spx500) |
 | Coverage report | — | [SPX500 coverage](https://getdata.finance/coverage/spx500) |
@@ -73,7 +73,7 @@ First and latest rows from the GitHub sample **`SPX500_5m.csv`**:
 
 **First rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-07-07T19:00:00+00:00 | 7498.3 | 7500.32 | 7491.55 | 7495.32 | 4654 |
 | 2026-07-07T19:05:00+00:00 | 7495.32 | 7498.82 | 7489.8 | 7490.57 | 3785 |
@@ -83,7 +83,7 @@ First and latest rows from the GitHub sample **`SPX500_5m.csv`**:
 
 **Last rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-09-02T01:40:00+00:00 | 7630.35 | 7631.34 | 7628.85 | 7629.6 | 415 |
 | 2026-09-02T01:45:00+00:00 | 7629.6 | 7630.1 | 7628.09 | 7628.35 | 377 |
@@ -95,7 +95,7 @@ First and latest rows from the GitHub sample **`SPX500_5m.csv`**:
 
 | Column | Description |
 | --- | --- |
-| `time` | Bar open timestamp (UTC, ISO-8601). |
+| `datetime` | Bar open timestamp (UTC, ISO-8601). |
 | `open` | Opening price of the candlestick bar. |
 | `high` | Highest price during the bar. |
 | `low` | Lowest price during the bar. |
@@ -103,7 +103,7 @@ First and latest rows from the GitHub sample **`SPX500_5m.csv`**:
 | `volume` | Tick volume (number of price updates) during the bar. |
 
 ```text
-time,open,high,low,close,volume
+datetime,open,high,low,close,volume
 ```
 
 ## Code examples
@@ -113,8 +113,8 @@ time,open,high,low,close,volume
 ```python
 import pandas as pd
 
-df = pd.read_csv('SPX500_5m.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('SPX500_5m.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 print(df.describe())
 ```
 
@@ -124,8 +124,8 @@ print(df.describe())
 import backtrader as bt
 import pandas as pd
 
-df = pd.read_csv('SPX500_5m.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('SPX500_5m.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 
 class PandasData(bt.feeds.PandasData):
     params = (('datetime', None), ('open', 'open'), ('high', 'high'),
@@ -143,8 +143,8 @@ cerebro.adddata(PandasData(dataname=df))
 import pandas as pd
 import vectorbt as vbt
 
-df = pd.read_csv('SPX500_5m.csv', parse_dates=['time'])
-close = df.set_index('time')['close']
+df = pd.read_csv('SPX500_5m.csv', parse_dates=['datetime'])
+close = df.set_index('datetime')['close']
 fast, slow = vbt.MA.run(close, 10), vbt.MA.run(close, 50)
 entries = fast.ma_crossed_above(slow)
 exits = fast.ma_crossed_below(slow)
